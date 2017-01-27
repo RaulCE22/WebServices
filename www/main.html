@@ -1,0 +1,89 @@
+
+<div class="spinner" ng-show="main.mostrarSpinner">
+  <div></div>
+</div>
+
+<div class="pantallaMensajes" ng-if="main.mostrarMensaje">
+  <div class="cajaMensajes">
+    <div class="cajaJSON">
+      <json-formatter json="main.mensaje" open="0"></json-formatter>
+    </div>
+    <div class="cajaBotonCerrar">
+      <button class="btn btn-primary" type="button" name="button" ng-click="main.mostrarMensaje = false">Cerrar</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="llamadasWs" ng-if="!main.anadiendoLlamadas && !main.anadiendoEntorno">
+
+  <h3>Configurador</h3>
+
+  <form >
+    <div class="form-group"><input type="text" class="form-control" placeholder="usuario" ng-model="main.usuario"></div>
+    <div class="form-group"><input type="text" class="form-control" placeholder="contraseña" ng-model="main.contrasena"></div>
+    <div class="form-group"><input type="text" class="form-control" placeholder="webservice" ng-model="main.webserviceToken"></div>
+    <div class="form-group">
+      <select class="form-control"  ng-options="entornos as entornos.url for entornos in main.entornos track by entornos.id" ng-model="main.entorno"></select>
+    </div>
+    <div class="botonEnviar">
+      <span class="enviar" ng-click="main.configurar()"></span>
+      <span class="editar" ng-click="main.anadiendoEntorno = true"></span>
+      <!-- <button type="submit" class="btn btn-primary">Llamar</button> -->
+      <!-- <button type="button" class="btn btn-primary" ng-click="main.anadiendoEntorno = true;">Editar</button> -->
+    </div>
+  </form>
+  <form class="cajaServicios">
+
+    <h3>Llamadas</h3>
+
+    <div class="form-group">
+      <select class="form-control"  ng-options="servicios as servicios.url for servicios in main.servicios track by servicios.id" ng-model="main.servicioSeleccionado" ng-change="main.datosInput = []"></select>
+      <!-- <select class="form-control" ng-model="main.servicioSeleccionado">
+      <option ng-repeat="servicios in main.servicios">{{servicios.url}}</option>
+    </select> -->
+    </div>
+    <div class="form-group" ng-repeat="(index, dato) in main.servicioSeleccionado.datos">
+      <label for="">{{dato}}</label>
+      <input type="text" class="form-control" placeholder="{{dato}}" ng-model="main.datosInput[index]">
+    </div>
+    <div class="botonEnviar">
+      <span class="enviar" ng-click="main.llamarWs()"></span>
+      <span class="editar" ng-click="main.anadiendoLlamadas = true"></span>
+      <!-- <button type="submit" class="btn btn-primary" ng-click="main.llamarWs()">Llamar</button> -->
+      <!-- <button type="button" class="btn btn-primary" ng-click="main.anadiendoLlamadas = true">Editar</button> -->
+    </div>
+  </form>
+</div>
+<div class="editarLlamadas container-fluid" ng-if="main.anadiendoLlamadas">
+  <span class="volver" ng-click="main.volver()">Editar llamadas</span>
+  <div class="llamada row" ng-repeat="(index,servicio) in main.servicios">
+    <div class="col-xs-10 form-group">
+      <input class="form-control" for="" ng-model="main.servicios[index].url"></input>
+      <input class="form-control" for="" ng-model="main.servicios[index].datos"></input>
+    </div>
+    <div class="col-xs-1 form-group">
+      <span class="borrar" ng-click="main.borrarServicio(index)"></span>
+    </div>
+  </div>
+  <span class="nuevo" ng-click="main.nuevoServicio(index)"></span>
+
+</div>
+
+<div class="editarEntornos" ng-if="main.anadiendoEntorno">
+  <span class="volver" ng-click="main.volver()">Editar entorno</span>
+  <div class="llamada row" ng-repeat="(index,entorno) in main.entornos">
+    <div class="col-xs-10 form-group">
+        <input class="form-control" for="" ng-model="main.entornos[index].url"></input>
+    </div>
+    <div class="col-xs-1 form-group">
+      <span class="borrar" ng-click="main.borrarEntorno(index)"></span>
+    </div>
+  </div>
+  <span class="nuevo" ng-click="main.nuevoEntorno(index)"></span>
+
+</div>
+
+<div class="version">
+  v1.0.0
+</div>
